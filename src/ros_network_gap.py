@@ -7,9 +7,10 @@ import UDPMulticaster
 
 
 class RosNetworkGap:
-    def __init__(self, broadcast, port, topic, msg_pkg, msg_type, max_rate):
+    def __init__(self, broadcast, port, inputtopic, exchangetopic, msg_pkg, msg_type, max_rate):
         self.port = int(port)
-        self.topic = str(topic)
+        self.inputtopic = str(inputtopic)
+        self.exchangetopic = str(exchangetopic)
         self.broadcast = str(broadcast)
 
         self.msg_pkg = str(msg_pkg)
@@ -26,8 +27,8 @@ class RosNetworkGap:
 
 
         # set up ros stuff
-        self.ros_publisher = rospy.Publisher(self.topic,  self.msg_class, queue_size=10)
-        self.ros_subscriber =  rospy.Subscriber(self.topic, self.msg_class, self.ros_callback, queue_size=1)
+        self.ros_publisher = rospy.Publisher(self.exchangetopic,  self.msg_class, queue_size=10)
+        self.ros_subscriber =  rospy.Subscriber(self.inputtopic, self.msg_class, self.ros_callback, queue_size=1)
 
         # set up UDP stuff
         self.udp_sender = UDPMulticaster.UdpMulticaster(broadcast, port)
@@ -63,11 +64,12 @@ if __name__ == '__main__':
 
     broadcast = str(rospy.get_param("~broadcast", "10.10.50.255"))
     port = int(rospy.get_param("~port", 14317))
-    topic = "network_gap_topic"
+    inputtopic = "input_topic"
+    exchangetopic = "network_gap_topic"
     msg_pkg = str(rospy.get_param("~msg_pkg", "nav_msgs.msg"))
     msg_type = str(rospy.get_param("~msg_type", "Odometry"))
     max_rate = float(rospy.get_param("~max_rate", 5))
 
     rospy.loginfo("Starting ros_network_gap with message " + msg_pkg + "/"+msg_type + " on " + broadcast + ":" + str(port))
-    node = RosNetworkGap(broadcast, port, topic, msg_pkg, msg_type, max_rate)
+    node = RosNetworkGap(broadcast, port, inputtopic, exchangetopic, msg_pkg, msg_type, max_rate)
     rospy.spin()

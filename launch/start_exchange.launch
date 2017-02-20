@@ -5,6 +5,7 @@
 	<param name="msg_pkg" value="nav_msgs.msg" />  		<!-- package name of message + .msg for python namespace -->
 	<param name="msg_type" value="Odometry" />		<!-- Message type -->
 	<param name="max_rate" value="5" />			<!-- Maximum rate of publishing to other networks -->
+	<remap from="input_topic" to="/auk/msf_core/odometry" />
 	<remap from="network_gap_topic" to="odometry_exchange" />
   </node>
 </launch>
