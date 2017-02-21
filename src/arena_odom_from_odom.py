@@ -33,13 +33,13 @@ def odom_callback(msg_in):
 	msg.pose.pose.position.y = vec_pose_transformed[1]
 	msg.pose.pose.position.z = vec_pose_transformed[2]
 
-	msg.pose.pose.orientation.x = vec_quat_transformed[0];
-	msg.pose.pose.orientation.y = vec_quat_transformed[1];
-	msg.pose.pose.orientation.z = vec_quat_transformed[2];
-	msg.pose.pose.orientation.w = vec_quat_transformed[3];
+	msg.pose.pose.orientation.x = vec_quat_transformed[0]
+	msg.pose.pose.orientation.y = vec_quat_transformed[1]
+	msg.pose.pose.orientation.z = vec_quat_transformed[2]
+	msg.pose.pose.orientation.w = vec_quat_transformed[3]
 
-	msg.twist.twist.linear = msg_in.twist.twist.linear;
-	msg.twist.twist.angular = msg_in.twist.twist.angular;
+	msg.twist.twist.linear = msg_in.twist.twist.linear
+	msg.twist.twist.angular = msg_in.twist.twist.angular
 
 	pub.publish(msg)
 	rate.sleep()
@@ -54,6 +54,7 @@ if __name__ == '__main__':
 		rate = rospy.Rate(max_rate)
 
 		# set up TF listener
+		rospy.logwarn("Reading TF from world to arena only at startup!")
 		listener = tf.TransformListener()
 		listener.waitForTransform(arena_frame, odom_frame, rospy.Time(), rospy.Duration(10.0))
 		(enu_arena_trans, enu_arena_rot) = listener.lookupTransform(arena_frame, odom_frame, rospy.Time(0))
