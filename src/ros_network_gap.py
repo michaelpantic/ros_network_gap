@@ -42,7 +42,6 @@ class RosNetworkGap:
         self.udp_sender.sendIdentifierPacket()
 
 
-
     def udp_callback(self, data):
         # callback received, deserialize data and check if of right object type
         obj = cPickle.loads(data);
@@ -56,8 +55,6 @@ class RosNetworkGap:
 
             # wait to be inside throttling frequency
             self.max_rate.sleep()
-
-            print "pub"
 
 if __name__ == '__main__':
     rospy.init_node('ros_network_gap', anonymous=True)
